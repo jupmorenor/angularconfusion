@@ -35,4 +35,46 @@
       </div>
     </div>
   </div>
+
+  <div fxFlex fxFlexOffset="20px" class="form-size">
+    <h3>Send us your feedback</h3>
+    <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()" >
+      <p>
+        <mat-form-field class="half-width" >
+          <input matInput formControlName="firstname" placeholder="First Name" type="text" required />
+        </mat-form-field>
+        <mat-form-field class="half-width" >
+          <input matInput formControlName="lastname" placeholder="Last Name" type="text" required />
+        </mat-form-field>
+      </p>
+      <p>
+        <mat-form-field class="half-width" >
+          <input matInput formControlName="telnum" placeholder="Phone Number" type="tel" required />
+        </mat-form-field>
+        <mat-form-field class="half-width" >
+          <input matInput formControlName="email" placeholder="Email" type="email" required />
+        </mat-form-field>
+      </p>
+      <table class="form-size">
+        <tr>
+          <td>
+            <mat-slide-toggle formControlName="agree" >May we contact you?</mat-slide-toggle>
+          </td>
+          <td>
+            <mat-select placeholder="How?" formControlName="contacttype">
+              <mat-option *ngFor="let type of contactType" [value]="type" >
+                {{ type }}
+              </mat-option>
+            </mat-select>
+          </td>
+        </tr>
+        <p>
+          <mat-form-field class="full-width">
+            <textarea matInput formControlName="message" placeholder="Your feedback here..." rows="12" ></textarea>
+          </mat-form-field>
+        </p>
+        <button mat-button type="submit" class="background-primary text-floral-white" >Send</button> 
+      </table>
+    </form>
+  </div>
 </div>
