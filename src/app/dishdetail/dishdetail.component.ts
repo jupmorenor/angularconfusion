@@ -15,6 +15,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 export class DishdetailComponent implements OnInit {
 
   dish: Dish;
+  dishCopy: Dish;
   dishIds: string[];
   errorMessage: string;
   prev: string;
@@ -57,6 +58,7 @@ export class DishdetailComponent implements OnInit {
     this.route.params.pipe(switchMap((params: Params) => this.dishService.getDish(params['id'])))
     .subscribe(dish => {
       this.dish = dish;
+      this.dishCopy = dish;
       this.setPrevNext(dish.id);
     },
     (error: any) => this.errorMessage = error );
@@ -75,7 +77,18 @@ export class DishdetailComponent implements OnInit {
   sendComment() {
     this.comment = this.commentForm.value;
     this.comment.date = new Date().toISOString();
-    this.dish.comments.push(this.comment);
+    this.dishCopy.comments.push(this.comment);
+    this.dishService.putDish(this.dishCopy).subscribe(
+      (dish: Dish) => {
+        this.dish = dish;
+        this.dishCopy = dish;
+      },
+      (error: any) => {
+        this.dish = null;
+        this.dishCopy = null;
+        this.errorMessage = error;
+      }
+    )
     this.commentForm.reset({
       author: '',
       rating: 5,
