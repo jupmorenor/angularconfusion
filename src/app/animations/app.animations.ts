@@ -1,6 +1,6 @@
 import { trigger, state, style, animate, transition } from '@angular/animations'
 
-export function visibility() {
+export const visibility = () => {
     return trigger('visibility', [
         state('shown', style({
           transform: 'scale(1.0)',
@@ -14,17 +14,18 @@ export function visibility() {
     ]);
 }
 
-export function flyInOut() {
+export const flyInOut = () => {
     return trigger('flyInOut', [
         state('*', style({
             opacity: 1,
             transform: 'translateX(0)',
         })),
         transition(':enter', [
-            animate('500ms ease-in', style({
+            style({
                 transform: 'translateX(-100%)',
                 opacity: 0,
-            })),
+            }),
+            animate('500ms ease-in'),
         ]),
         transition(':leave', [
             animate('500ms ease-out', style({
