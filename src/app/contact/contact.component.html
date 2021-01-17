@@ -36,7 +36,7 @@
     </div>
   </div>
 
-  <div fxFlex fxFlexOffset="20px" class="form-size">
+  <div fxFlex fxFlexOffset="20px" class="form-size" *ngIf="!sent && (!feedback || !feedbackError)" [@expand]>
     <h3>Send us your feedback</h3>
     <form novalidate [formGroup]="feedbackForm" #fform="ngForm" (ngSubmit)="onSubmit()" >
       <p>
@@ -88,5 +88,19 @@
         <button mat-button type="submit" class="background-primary text-floral-white" [disabled]="feedbackForm.invalid" >Send</button> 
       </table>
     </form>
+  </div>
+  <div *ngIf="feedback" [@expand]>
+    <p>Name: {{ feedback.firstname }}  {{ feedback.lastname }} </p>
+    <p>Contact: {{ feedback.telnum }} </p>
+    <p>Email: {{ feedback.email }} </p>
+    <p>Message: {{ feedback.message }} </p>
+  </div>
+  <div *ngIf="sent && (!feedback || !feedbackError)" [@expand]>
+    <mat-spinner></mat-spinner>
+    <h4>Loading... Please wait</h4>
+  </div>
+  <div *ngIf="feedbackError" [@expand]>
+    <h2>Error</h2>
+    <h4>{{ feedbackError }}</h4>
   </div>
 </div>

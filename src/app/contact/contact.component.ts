@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { flyInOut } from '../animations/app.animations';
+import { flyInOut, visibility, expand } from '../animations/app.animations';
+import { FeedbackService } from '../services/feedback.service';
 import { Feedback, ContactType } from '../shared/feedback';
 
 @Component({
@@ -8,7 +9,9 @@ import { Feedback, ContactType } from '../shared/feedback';
   templateUrl: './contact.component.html',
   styleUrls: ['./contact.component.scss'],
   animations: [
-    flyInOut()
+    visibility(),
+    flyInOut(),
+    expand()
   ],
   host: {
     '[@flyInOut]': 'true',
@@ -19,8 +22,11 @@ export class ContactComponent implements OnInit {
 
   feedbackForm: FormGroup;
   feedback: Feedback;
+  feedbackError: string;
   contactType = ContactType;
   @ViewChild('fform') feedbackFormDirective;
+  visibility: string = 'hidden';
+  sent: boolean = false;
 
   formErrors = {
     'firstname': '',
@@ -51,7 +57,10 @@ export class ContactComponent implements OnInit {
 
   }
 
-  constructor(private builder: FormBuilder) {
+  constructor(
+    private builder: FormBuilder,
+    private feedbackService: FeedbackService,
+  ) {
     this.createForm()
   }
 
@@ -91,7 +100,22 @@ export class ContactComponent implements OnInit {
   }
 
   onSubmit() {
-    this.feedback = this.feedbackForm.value;
+    this.visibility = 'shown';
+    this.sent = true;
+    this.feedback = null;
+    this.feedbackError = null;
+    this.feedbackService.submitFeedback(<Feedback>this.feedbackForm.value).subscribe(
+      (response: Feedback) => {
+        this.feedback = response;
+        this.sent = false; 
+        setTimeout(() => this.feedback = null, 5000)
+      },
+      (error: any) => {
+        this.feedbackError = error;
+        this.sent = false;
+        setTimeout(() => this.feedbackError = null, 5000)
+      },
+    )
     this.feedbackForm.reset({
       firstname: '',
       lastname: '',
