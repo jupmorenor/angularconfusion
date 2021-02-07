@@ -8,9 +8,16 @@ describe('workspace-project App', () => {
     page = new AppPage();
   });
 
-  it('should display welcome message', () => {
-    page.navigateTo();
-    expect(page.getTitleText()).toEqual('angularconfusion app is running!');
+  it('should display message saying Ristorante Con Fusion', () => {
+    page.navigateTo('/');
+    expect(page.getTitleText('app-root h1')).toEqual('Ristorante Con Fusion');
+  });
+
+  it('should navigate to about us page by clicking the link', () => {
+    page.navigateTo('/');
+    let navlink = page.getAllElements('a').get(1);
+    navlink.click();
+    expect(page.getTitleText('h3')).toBe('About Us');
   });
 
   afterEach(async () => {
