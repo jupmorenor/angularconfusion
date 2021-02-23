@@ -20,6 +20,16 @@ describe('workspace-project App', () => {
     expect(page.getTitleText('h3')).toBe('About Us');
   });
 
+  it('should enter a comment for the first dish', () => {
+    page.navigateTo('/dishdetail/0');
+    const newAuthor = page.getElement('input[type=text]');
+    const newComment = page.getElement('textarea');
+    const submitButton = page.getElement('button[type=submit]');
+    newAuthor.sendKeys('test Author');
+    newComment.sendKeys('Test comment');
+    submitButton.click();
+  })
+
   afterEach(async () => {
     // Assert that there are no errors emitted from the browser
     const logs = await browser.manage().logs().get(logging.Type.BROWSER);
