@@ -84,9 +84,6 @@ import { HighlightDirective } from './directives/highlight.directive';
     ProcessHTTPMsgService,
     { provide: 'BaseURL', useValue: baseURL },
   ],
-  entryComponents: [
-    LoginComponent,
-  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -23,7 +23,7 @@ export class AboutComponent implements OnInit {
 
   constructor(
     private leaderService: LeaderService,
-    @Inject('BaseURL') private BaseURL: string,
+    @Inject('BaseURL') protected BaseURL: string,
   ) { }
 
   ngOnInit(): void {
